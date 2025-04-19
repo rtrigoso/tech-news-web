@@ -7,11 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#0E4125',
-        secondary: '#D0BFFF',
-        tertiary: '#B2C9FF',
-        fore: '#F2F2F2',
-        back: '#171717'
+        tertiary: '#D0BFFF',
+        secondary: '#030f08',
+        primary: '#F2F2F2'
       },
       fontSize: {
         base: '8px'

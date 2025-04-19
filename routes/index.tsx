@@ -35,11 +35,6 @@ async function GetArticles (): Promise<Article[]> {
   
   return resources.data as Article[];
 }
- 
-
-interface Data {
-  articles: Article[];
-}
 
 export default async function Home() {
   const articles = await GetArticles();
@@ -64,7 +59,7 @@ export default async function Home() {
 
             return (
               <div class="text-sm">
-                <a class="font-medium cursor-pointer underline decoration-sky-500 decoration-2 hover:text-sky-500 hover:no-underline visited:text-sky-600 visited:no-underline" href={url} target="_BLANK" >{title}</a>
+                <a class="font-medium cursor-pointer blink decoration-primary underline decoration-dotted decoration-1 hover:text-tertiary hover:no-underline visited:text-primary visited:no-underline" href={url} target="_BLANK" >{title}</a>
                 <div class="text-xs">{ createdAt }</div>
               </div>
             );
