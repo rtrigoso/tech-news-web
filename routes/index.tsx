@@ -46,9 +46,9 @@ export default async function Home() {
           <h1 class="text-4xl font-bold">HN renfoc.us</h1>
           <h2>top articles focusing on computer science</h2>
         </header>
-        <div class="flex flex-col gap-4">
+        <main class="flex flex-col gap-4">
         { 
-          articles.map(({ title, url, created_at }) => {
+          articles.map(({ title, url, created_at, comments_count, upvotes_count, id }) => {
             const createdAt = new Intl.DateTimeFormat(
               'en-US', {
                 month: 'short',
@@ -60,12 +60,27 @@ export default async function Home() {
             return (
               <div class="text-sm">
                 <a class="font-medium cursor-pointer blink decoration-primary underline decoration-dotted decoration-1 hover:text-tertiary hover:no-underline visited:text-primary visited:no-underline" href={url} target="_BLANK" >{title}</a>
-                <div class="text-xs">{ createdAt }</div>
+                <div class="text-xs flex flex-row justify-between gap-4 pt-0.5">
+                  <div>{ createdAt }</div>
+                  <a class="flex flex-row text-white gap-2" href={`https://news.ycombinator.com/item?id=${id}`}>
+                    <div class="flex flex-row gap-0.5" >
+                      <img src="/comments.svg" height={12} width={12} />
+                      <span>{comments_count}</span>
+                    </div>
+                    <div class="flex flex-row gap-0.5">
+                      <img src="/upvote.svg" height={12} width={12}/>
+                      <span>{upvotes_count}</span>
+                    </div>
+                  </a>
+                </div>
               </div>
             );
           })
         }
-        </div>
+        </main>
+        <footer class="pt-12">
+          This site pulls posts in hackernews and sorts them using the lower-bound of a <a class="text-pink-400" href="https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval" target="_BLANK">Wilson score confidence interval</a>
+        </footer>
       </div>
     </div>
   );
