@@ -10,6 +10,7 @@ export default function App({ Component }: PageProps) {
         <meta name="keywords" content="articles, stories, programming, computer science, hackernews, aggregator" />
         <meta name="author" content="renfoc.us" />
         <link rel="stylesheet" href="/styles.css" />
+        <link rel="alternate" type="application/rss+xml" title="HN Focus" href="/rss.xml" />
       </head>
       <body class="bg-secondary text-primary text-base">
         <Component />
