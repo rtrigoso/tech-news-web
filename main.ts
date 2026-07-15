@@ -9,5 +9,8 @@ import "$std/dotenv/load.ts";
 import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 import config from "./fresh.config.ts";
+import { ingestTopStories } from "./lib/ingest.ts";
+
+Deno.cron("ingest HN top stories", "0 * * * *", ingestTopStories);
 
 await start(manifest, config);
