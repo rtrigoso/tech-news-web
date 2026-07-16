@@ -25,7 +25,9 @@ export const handler: Handlers = {
       <description>${escapeXml(description)}</description>
       <pubDate>${pubDate}</pubDate>
       <guid isPermaLink="false">hn-${article.id}</guid>
-      <comments>${escapeXml(`https://news.ycombinator.com/item?id=${article.id}`)}</comments>
+      <comments>${
+          escapeXml(`https://news.ycombinator.com/item?id=${article.id}`)
+        }</comments>
     </item>`;
       })
       .join("\n");
@@ -38,7 +40,9 @@ export const handler: Handlers = {
     <description>Top Hacker News articles focusing on computer science</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${escapeXml(`${baseUrl}/rss.xml`)}" rel="self" type="application/rss+xml"/>
+    <atom:link href="${
+      escapeXml(`${baseUrl}/rss.xml`)
+    }" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;
