@@ -44,11 +44,12 @@ export default async function Home() {
               const isBuzzing = !isToday && new Date(created_at).toDateString() === oldestDay;
               const ratio = comments_count > 0 ? upvotes_count / comments_count : Infinity;
               const isHyped = !isToday && !isBuzzing && comments_count >= 50 && Math.floor(ratio) >= 1 && Math.floor(ratio) <= 9;
+              const textColor = isToday ? "text-tertiary hover:text-tertiary" : isBuzzing ? "text-accent hover:text-accent" : isHyped ? "text-hyped hover:text-hyped" : "hover:text-white";
 
               return (
-                <div class={`text-sm p-[var(--item-padding)] border border-secondary${isToday ? " article-today" : ""}${isBuzzing ? " article-buzzing" : ""}${isHyped ? " article-hyped" : ""}`}>
+                <div class={`text-sm p-[var(--item-padding)] border border-secondary hover:bg-black/20 hover:cursor-pointer${isToday ? " article-today" : ""}${isBuzzing ? " article-buzzing" : ""}${isHyped ? " article-hyped" : ""}`}>
                   <a
-                    class="font-medium cursor-pointer blink decoration-primary underline decoration-dotted decoration-1 hover:text-tertiary hover:no-underline visited:text-primary visited:no-underline"
+                    class={`font-medium cursor-pointer blink decoration-primary no-underline ${textColor} visited:text-primary visited:no-underline`}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
