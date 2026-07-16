@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --item-padding: 0.25rem;
+}
+
+@keyframes border-highlight {
+  0%   { border-color: #030f08; }
+  25%  { border-color: #D0BFFF; }
+  75%  { border-color: #D0BFFF; }
+  100% { border-color: #030f08; }
+}
+
+.article-today {
+  animation: border-highlight 2s ease-in-out;
+}
+
+@keyframes border-buzzing {
+  0%   { border-color: #030f08; }
+  25%  { border-color: #F4A261; }
+  75%  { border-color: #F4A261; }
+  100% { border-color: #030f08; }
+}
+
+.article-buzzing {
+  animation: border-buzzing 2s ease-in-out;
+}
+
+@keyframes border-hyped {
+  0%   { border-color: #030f08; }
+  25%  { border-color: #6EE7B7; }
+  75%  { border-color: #6EE7B7; }
+  100% { border-color: #030f08; }
+}
+
+.article-hyped {
+  animation: border-hyped 2s ease-in-out;
+}

@@ -9,7 +9,9 @@ export default {
       colors: {
         tertiary: '#D0BFFF',
         secondary: '#030f08',
-        primary: '#F2F2F2'
+        primary: '#F2F2F2',
+        accent: '#F4A261',
+        hyped: '#6EE7B7'
       },
       fontSize: {
         base: '8px'
