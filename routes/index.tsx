@@ -1,7 +1,14 @@
 import { getTopArticles } from "../lib/kv.ts";
 
 export default async function Home() {
-  const articles = await getTopArticles();
+  const articles = await getTopArticles(50);
+
+  const oldestDay = new Date(
+    articles.reduce((min, { created_at }) =>
+      new Date(created_at) < new Date(min) ? created_at : min,
+      articles[0]?.created_at ?? ""
+    )
+  ).toDateString();
 
   return (
     <div class="px-4 py-8 mx-auto font-mono uppercase font-stretch-condensed">
@@ -9,6 +16,20 @@ export default async function Home() {
         <header class="mb-8 text-center">
           <h1 class="text-4xl font-bold">HN Focus</h1>
           <h2>top articles focusing on computer science</h2>
+          <div class="flex items-center justify-center gap-4 mt-2 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="inline-block w-[1em] h-[1em] border border-tertiary"></span>
+              <span class="leading-none lowercase">new</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="inline-block w-[1em] h-[1em] border border-accent"></span>
+              <span class="leading-none lowercase">buzzing</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="inline-block w-[1em] h-[1em] border border-hyped"></span>
+              <span class="leading-none lowercase">hyped</span>
+            </div>
+          </div>
         </header>
         <main class="flex flex-col gap-4">
           {articles.map(
@@ -19,10 +40,16 @@ export default async function Home() {
                 year: "numeric",
               }).format(new Date(created_at));
 
+              const isToday = new Date(created_at).toDateString() === new Date().toDateString();
+              const isBuzzing = !isToday && new Date(created_at).toDateString() === oldestDay;
+              const ratio = comments_count > 0 ? upvotes_count / comments_count : Infinity;
+              const isHyped = !isToday && !isBuzzing && comments_count >= 50 && Math.floor(ratio) >= 1 && Math.floor(ratio) <= 9;
+              const textColor = isToday ? "text-tertiary hover:text-tertiary" : isBuzzing ? "text-accent hover:text-accent" : isHyped ? "text-hyped hover:text-hyped" : "hover:text-white";
+
               return (
-                <div class="text-sm">
+                <div class={`text-sm p-[var(--item-padding)] border border-secondary hover:bg-black/20 hover:cursor-pointer${isToday ? " article-today" : ""}${isBuzzing ? " article-buzzing" : ""}${isHyped ? " article-hyped" : ""}`}>
                   <a
-                    class="font-medium cursor-pointer blink decoration-primary underline decoration-dotted decoration-1 hover:text-tertiary hover:no-underline visited:text-primary visited:no-underline"
+                    class={`font-medium cursor-pointer blink decoration-primary no-underline ${textColor} visited:text-primary visited:no-underline`}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
