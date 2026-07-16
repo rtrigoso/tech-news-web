@@ -1,5 +1,5 @@
 import type { HNStory } from "./hn.ts";
-import { fetchTopStories } from "./hn.ts";
+import { fetchStory, fetchTopComment, fetchTopStories } from "./hn.ts";
 import { wilsonScore } from "./wilson.ts";
 import { upsertTopArticles } from "./kv.ts";
 import type { Article } from "./types.ts";
@@ -30,6 +30,24 @@ export async function ingestTopStories(): Promise<void> {
   const stories = await fetchTopStories();
   const articles = mapStoriesToArticles(stories);
   const top100 = articles.sort((a, b) => b.score - a.score).slice(0, 100);
+
+  console.log("[ingest] fetching top comments for popular articles");
+  const storyById = new Map(stories.map((s) => [s.id, s]));
+  await Promise.all(
+    top100.map(async (article) => {
+      if (article.top_comment) return;
+      const { comments_count } = article;
+      if (!comments_count || comments_count <= 100) return;
+      const kids = storyById.get(article.id)?.kids;
+      if (!kids) return;
+      const topComment = await fetchTopComment(kids);
+      if (topComment) {
+        article.top_comment = topComment;
+        console.log(`[ingest] added top_comment to article ${article.id}`);
+      }
+    }),
+  );
+
   console.log(`[ingest] storing ${top100.length} articles`);
   await upsertTopArticles(top100);
   console.log("[ingest] done");

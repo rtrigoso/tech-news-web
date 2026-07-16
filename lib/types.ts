@@ -9,4 +9,9 @@ export interface Article {
   score: number;
   description: string;
   url: string;
+  top_comment?: {
+    id: number;
+    author: string;
+    content: string;
+  };
 }
