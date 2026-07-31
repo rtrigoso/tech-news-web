@@ -111,7 +111,7 @@ export default async function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`View comment by ${top_comment.author} on Hacker News: "${top_comment.content}"`}
-                      class="block text-[0.75rem] normal-case text-primary/60 italic mt-1 line-clamp-2 py-4 px-16 hover:text-primary/80"
+                      class="block text-[0.75rem] normal-case text-primary/60 italic mt-1 line-clamp-2 py-4 px-8 hover:text-primary/80"
                     >
                       &ldquo;{top_comment.content}&rdquo; &mdash;{" "}
                       {top_comment.author}
