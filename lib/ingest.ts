@@ -37,7 +37,7 @@ export async function ingestTopStories(): Promise<void> {
     top100.map(async (article) => {
       if (article.top_comment) return;
       const { comments_count } = article;
-      if (!comments_count || comments_count <= 100) return;
+      if (!comments_count || comments_count <= 50) return;
       const kids = storyById.get(article.id)?.kids;
       if (!kids) return;
       const topComment = await fetchTopComment(kids);
