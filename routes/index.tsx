@@ -11,11 +11,29 @@ export default async function Home() {
     ),
   ).toDateString();
 
+  const last_build_time = articles.reduce(
+    (max, { updated_at }) => updated_at > max ? updated_at : max,
+    articles[0]?.updated_at ?? new Date().toISOString(),
+  );
+
+  const lastBuildTimeFormatted = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  }).format(new Date(last_build_time));
+
   return (
     <div class="px-4 py-8 mx-auto font-mono uppercase font-stretch-condensed">
       <div class="max-w-screen-md mx-auto flex flex-col items-center justify-center">
         <header class="mb-8 text-center">
-          <h1 class="text-4xl font-bold">HN Focus</h1>
+          <h1 class="text-4xl font-bold">
+            <a href="/" class="text-inherit no-underline hover:text-inherit">
+              HN Focus
+            </a>
+          </h1>
           <h2>top articles focusing on computer science</h2>
           <div class="flex items-center justify-center gap-4 mt-2 text-xs">
             <div class="flex items-center gap-1.5">
@@ -134,6 +152,10 @@ export default async function Home() {
             >
               Wilson score confidence interval
             </a>
+          </p>
+          <p id="last_update_date">
+            last update time:{" "}
+            <time dateTime={last_build_time}>{lastBuildTimeFormatted}</time>
           </p>
           <a
             href="/rss.xml"
