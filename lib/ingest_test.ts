@@ -54,8 +54,14 @@ Deno.test("mapStoriesToArticles - score is a number between 0 and 1", () => {
   assert(article.score >= 0 && article.score <= 1);
 });
 
-Deno.test("mapStoriesToArticles - defaults missing text to empty string", () => {
+Deno.test("mapStoriesToArticles - sets description to empty string when text is missing", () => {
   const story = makeStory({ text: undefined });
+  const [article] = mapStoriesToArticles([story]);
+  assertEquals(article.description, "");
+});
+
+Deno.test("mapStoriesToArticles - ignores HN's text field even when present", () => {
+  const story = makeStory({ text: "Related: dupe note from HN" });
   const [article] = mapStoriesToArticles([story]);
   assertEquals(article.description, "");
 });

@@ -25,7 +25,7 @@ export function mapStoriesToArticles(stories: HNStory[]): Article[] {
         score: wilsonScore(upvotes, downvotes),
         created_at: new Date(s.time * 1000).toISOString(),
         updated_at: new Date().toISOString(),
-        description: s.text ?? "",
+        description: "",
       };
     });
 }
