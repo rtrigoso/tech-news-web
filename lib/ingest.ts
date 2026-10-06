@@ -1,7 +1,12 @@
 import type { HNStory } from "./hn.ts";
 import { fetchStory, fetchTopComment, fetchTopStories } from "./hn.ts";
 import { wilsonScore } from "./wilson.ts";
-import { upsertTopArticles } from "./kv.ts";
+import {
+  getArticlesMissingDescription,
+  updateArticleDescription,
+  upsertTopArticles,
+} from "./kv.ts";
+import { fetchOgDescription } from "./scrape.ts";
 import type { Article } from "./types.ts";
 
 export function mapStoriesToArticles(stories: HNStory[]): Article[] {
@@ -51,4 +56,20 @@ export async function ingestTopStories(): Promise<void> {
   console.log(`[ingest] storing ${top100.length} articles`);
   await upsertTopArticles(top100);
   console.log("[ingest] done");
+}
+
+export async function backfillDescriptions(limit = 10): Promise<void> {
+  const candidates = await getArticlesMissingDescription(limit);
+  console.log(`[backfill] ${candidates.length} articles missing description`);
+
+  await Promise.all(
+    candidates.map(async (article) => {
+      const description = await fetchOgDescription(article.url);
+      if (!description) return;
+      const updated = await updateArticleDescription(article.id, description);
+      if (updated) {
+        console.log(`[backfill] updated description for article ${article.id}`);
+      }
+    }),
+  );
 }
