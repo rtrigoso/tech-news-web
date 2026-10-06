@@ -56,7 +56,7 @@ export async function fetchComment(id: number): Promise<HNComment | null> {
   return res.json();
 }
 
-function decodeHtmlEntities(text: string): string {
+export function decodeHtmlEntities(text: string): string {
   return text
     .replace(/&quot;/g, '"')
     .replace(/&#x27;|&#39;|&apos;/g, "'")
